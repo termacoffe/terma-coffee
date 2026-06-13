@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terma Coffee | Premium Nepali Coffee</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <!-- NAVBAR -->
+  <header>
+    <div class="nav-container">
+      <a class="brand-group" id="brandLink">
+        <span class="brand-name">TERMA <span>COFFEE</span></span>
+        <span class="brand-tag">Premium Nepali Coffee</span>
+      </a>
+      <nav class="nav-menu" id="navMenu">
+        <a href="#beans" data-open-cat="beans">Beans</a>
+        <a href="#powder" data-open-cat="powder">Powder</a>
+        <a href="#machines" data-open-cat="machines">Machines</a>
+        <a href="#" id="trackLink">Track order</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="cart-btn" id="cartBtn" aria-label="Cart">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <button class="nav-toggle" id="navToggle" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <h1>Terma <span>Shop</span></h1>
+    </div>
+  </section>
+
+  <!-- FEATURED: Beans & Powder -->
+  <section class="featured">
+    <a class="feat-card" href="#beans" data-open-cat="beans">
+      <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=900&q=80&auto=format&fit=crop" alt="Coffee beans" />
+      <div class="feat-overlay">
+        <span class="feat-kicker">Whole bean</span>
+        <h2>Coffee Beans</h2>
+        <p>Highland Arabica, roasted in small batches.</p>
+        <span class="feat-cta">Shop beans →</span>
+      </div>
+    </a>
+    <a class="feat-card" href="#powder" data-open-cat="powder">
+      <img src="https://truesouth.in/cdn/shop/files/southindian2.jpg?v=1707477021" alt="Coffee powder" />
+      <div class="feat-overlay">
+        <span class="feat-kicker">Fine grind</span>
+        <h2>Coffee Powder</h2>
+        <p>Freshly ground, ready to brew anytime.</p>
+        <span class="feat-cta">Shop powder →</span>
+      </div>
+    </a>
+    <a class="feat-card" href="#machines" data-open-cat="machines">
+      <img src="https://mywirsh.com/cdn/shop/articles/Moka_Pot_MasteryHow_to_Avoid_Burnt_Coffee_and_Achieve_Espresso-Like_Crema_at_Home_b49cf4de-81e0-4701-9c7b-60cd39071a12.jpg?v=1780367538" alt="Coffee machine" />
+      <div class="feat-overlay">
+        <span class="feat-kicker">Brew at home</span>
+        <h2>Coffee Machines</h2>
+        <p>Moka pots &amp; French press — pick size &amp; colour.</p>
+        <span class="feat-cta">Shop machines →</span>
+      </div>
+    </a>
+  </section>
+
+  <!-- PRODUCT SECTIONS -->
+  <main>
+    <section id="beans" class="catalog" hidden>
+      <div class="section-head"><h2>Coffee Beans</h2><p>Whole bean · medium-dark roast</p></div>
+      <div class="product-grid" data-cat="beans"></div>
+    </section>
+
+    <section id="powder" class="catalog" hidden>
+      <div class="section-head"><h2>Coffee Powder</h2><p>Freshly ground · ready to brew</p></div>
+      <div class="product-grid" data-cat="powder"></div>
+    </section>
+
+    <section id="machines" class="catalog" hidden>
+      <div class="section-head"><h2>Coffee Machines</h2><p>Moka pots &amp; French press — choose your size and colour</p></div>
+      <div class="product-grid" data-cat="brewing"></div>
+    </section>
+  </main>
+
+  <!-- CONTACT / SOCIAL -->
+  <section id="contact" class="contact-section">
+    <h2>Order &amp; Connect</h2>
+    <p class="contact-lead">Message us on any platform — we reply fast. Balaju‑16, Kathmandu.</p>
+    <div class="social-grid">
+      <a class="social-card whatsapp" href="https://wa.me/9779767354091" target="_blank" rel="noopener">
+        <i class="fa-brands fa-whatsapp"></i><span>WhatsApp</span><small>9767354091</small>
+      </a>
+      <a class="social-card instagram" href="https://www.instagram.com/terma.coffee?igsh=aXBqeXI2bTllMXJk" target="_blank" rel="noopener">
+        <i class="fa-brands fa-instagram"></i><span>Instagram</span><small>@terma.coffee</small>
+      </a>
+      <a class="social-card facebook" href="https://www.facebook.com/profile.php?id=61586966680904" target="_blank" rel="noopener">
+        <i class="fa-brands fa-facebook"></i><span>Facebook</span><small>Terma Coffee</small>
+      </a>
+      <a class="social-card tiktok" href="https://www.tiktok.com/@terma.coffee?_r=1&_t=ZS-96a9zXnqQuA" target="_blank" rel="noopener">
+        <i class="fa-brands fa-tiktok"></i><span>TikTok</span><small>@terma.coffee</small>
+      </a>
+    </div>
+    <p class="contact-info">
+      <span class="contact-label">Contact us at</span>
+      <a class="contact-number" href="tel:9767354091">9767354091</a>
+    </p>
+  </section>
+
+  <footer>
+    <p>© <span id="year"></span> Terma Coffee · Founder Sugam Pudasaini · Balaju‑16, Kathmandu</p>
+    <a href="/admin" class="admin-link">Staff login</a>
+  </footer>
+
+  <!-- ===== PRODUCT DETAIL MODAL ===== -->
+  <div class="overlay" id="productModal" hidden>
+    <div class="product-detail" role="dialog" aria-modal="true">
+      <button class="close-x" data-close>&times;</button>
+      <div class="detail-grid">
+        <div class="detail-visual" id="detailVisual"></div>
+        <div class="detail-body">
+          <span class="detail-cat" id="detailCat"></span>
+          <h3 id="detailName"></h3>
+          <p class="detail-tag" id="detailTag"></p>
+          <p class="detail-desc" id="detailDesc"></p>
+          <div class="detail-opt" id="detailVariantWrap">
+            <span class="opt-label">Size</span>
+            <div class="detail-variants" id="detailVariants"></div>
+          </div>
+          <div class="detail-opt" id="detailColorWrap" hidden>
+            <span class="opt-label">Colour</span>
+            <div class="detail-colors" id="detailColors"></div>
+          </div>
+          <table class="spec-table" id="detailSpecs"></table>
+          <div class="detail-buy">
+            <div class="qty-control">
+              <button data-qty="-1">−</button><span id="detailQty">1</span><button data-qty="1">+</button>
+            </div>
+            <div class="detail-price"><span id="detailPrice">Rs. 0</span></div>
+          </div>
+          <button class="btn btn-primary full" id="addToCartBtn">Add to cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== CART DRAWER ===== -->
+  <div class="overlay drawer-overlay" id="cartDrawer" hidden>
+    <aside class="cart" role="dialog" aria-modal="true">
+      <div class="cart-head">
+        <h3>Your Cart</h3><button class="close-x" data-close>&times;</button>
+      </div>
+      <div class="cart-items" id="cartItems"></div>
+      <div class="cart-foot" id="cartFoot">
+        <div class="cart-line"><span>Subtotal</span><span id="cartSubtotal">Rs. 0</span></div>
+        <div class="cart-line muted"><span>Delivery</span><span id="cartDelivery">—</span></div>
+        <div class="cart-line total"><span>Total</span><span id="cartTotal">Rs. 0</span></div>
+        <button class="btn btn-primary full" id="checkoutBtn">Checkout</button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ===== CHECKOUT MODAL ===== -->
+  <div class="overlay" id="checkoutModal" hidden>
+    <form class="checkout" id="checkoutForm">
+      <button type="button" class="close-x" data-close>&times;</button>
+      <h3>Delivery details</h3>
+      <label>Full name <input id="c-name" required maxlength="80" placeholder="Your name" /></label>
+      <label>Phone number <input id="c-phone" required maxlength="30" placeholder="98XXXXXXXX" /></label>
+      <label>Delivery address <textarea id="c-address" rows="2" placeholder="Tole, ward, city"></textarea></label>
+      <label>Note (optional) <input id="c-note" maxlength="200" placeholder="Any instructions" /></label>
+      <div class="checkout-summary" id="checkoutSummary"></div>
+      <button type="submit" class="btn btn-primary full" id="placeOrderBtn">Place order</button>
+      <p class="checkout-fine">You’ll get a confirmation and we’ll reach out on WhatsApp.</p>
+    </form>
+  </div>
+
+  <!-- ===== ORDER SUCCESS ===== -->
+  <div class="overlay" id="successModal" hidden>
+    <div class="success">
+      <div class="success-check"><i class="fa-solid fa-check"></i></div>
+      <h3>Order placed! 🎉</h3>
+      <p>Your order <strong id="successId">#0</strong> has been received. We’ll confirm shortly.</p>
+      <a class="btn btn-whatsapp full" id="successWhatsapp" target="_blank" rel="noopener">
+        <i class="fa-brands fa-whatsapp"></i> Confirm on WhatsApp
+      </a>
+      <button class="btn btn-primary full" id="successTrack"><i class="fa-solid fa-location-dot"></i> Track your order</button>
+      <button class="btn btn-ghost full" data-close>Continue shopping</button>
+    </div>
+  </div>
+
+  <!-- ===== ORDER TRACKING MODAL ===== -->
+  <div class="overlay" id="trackModal" hidden>
+    <div class="track">
+      <button class="close-x" data-close>&times;</button>
+      <h3><i class="fa-solid fa-location-dot"></i> Track your order</h3>
+      <p class="track-hint">Enter your order number and the phone you used to order.</p>
+      <form class="track-form" id="trackForm">
+        <input id="t-id" inputmode="numeric" placeholder="Order number (e.g. 3)" required />
+        <input id="t-phone" inputmode="tel" placeholder="Phone number" required />
+        <button type="submit" class="btn btn-primary" id="trackBtn">Track</button>
+      </form>
+      <div id="trackResult"></div>
+    </div>
+  </div>
+
+  <!-- ===== STORY MODAL ===== -->
+  <div class="overlay story-overlay" id="storyModal" hidden>
+    <div class="story">
+      <button class="close-x" data-close>&times;</button>
+      <h2>Welcome to Terma Coffee</h2>
+      <p>Welcome to Terma Coffee — where every cup tells a story of Nepal's finest highlands. Nestled in the heart of Balaju‑16, Kathmandu, Terma Coffee is not just a coffee shop; it is a celebration of Nepali coffee culture, craftsmanship, and community.</p>
+      <p>At Terma Coffee, we believe that great coffee should never come at a great price. That is why we are proud to offer A‑grade quality coffee at the most affordable prices in Kathmandu.</p>
+      <p>Our coffee is fully grown and carefully crafted in Nuwakot, one of Nepal's most fertile regions. From the lush green hills of Nuwakot, our beans are cultivated with love, harvested at peak ripeness, and processed with traditional care to preserve every note of flavor.</p>
+      <p>We are a proudly local Nepali brand — from the farm to your cup, every step happens right here in Nepal. Terma Coffee was founded by <strong>Sugam Pudasaini</strong>, with a mission to put Nepali coffee on the map.</p>
+      <p class="story-footer-brand">Terma Coffee · Founder — Sugam Pudasaini</p>
+    </div>
+  </div>
+
+  <div class="toast-wrap" id="toasts"></div>
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terma Coffee · Admin</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root { --bg:#14100c;--surface:#1e1813;--surface-2:#271f18;--accent:#c99a53;--accent-2:#e0b56b;--text:#f5efe7;--muted:#b0a596;--border:#342a21;--green:#25d366; }
+    * { margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif; }
+    body { color:var(--text);line-height:1.5;padding:24px;min-height:100vh;
+      background:linear-gradient(160deg,#3b2718 0%,#2a1c12 45%,#1d130c 100%) fixed; }
+    a { color:var(--accent);text-decoration:none; }
+    .top { max-width:1100px;margin:0 auto 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px; }
+    .top h1 { font-size:1.5rem;letter-spacing:.5px; } .top h1 span { color:var(--accent); }
+    .wrap { max-width:1100px;margin:0 auto; }
+    /* glowing Sugam title */
+    .brand-hero { text-align:center; margin:4px auto 30px; }
+    .brand-hero .glow {
+      display:inline-block; font-size:clamp(2.8rem,10vw,5.5rem); font-weight:800;
+      letter-spacing:6px; text-transform:uppercase;
+      background:linear-gradient(180deg,#fbe7be,#c99a53); -webkit-background-clip:text;
+      background-clip:text; color:transparent;
+      animation:glowpulse 2.6s ease-in-out infinite;
+    }
+    @keyframes glowpulse {
+      0%,100% { filter:drop-shadow(0 0 6px rgba(201,154,83,.55)) drop-shadow(0 0 18px rgba(201,154,83,.35)); }
+      50%     { filter:drop-shadow(0 0 12px rgba(224,181,107,.9)) drop-shadow(0 0 34px rgba(224,181,107,.55)) drop-shadow(0 0 60px rgba(224,181,107,.35)); }
+    }
+    /* login */
+    .login { max-width:380px;margin:9vh auto;background:rgba(30,24,19,.92);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:18px;padding:38px 32px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.5); }
+    .login .logo { font-size:46px;margin-bottom:6px; }
+    .login h2 { margin-bottom:6px;color:var(--accent);font-size:1.5rem;letter-spacing:1px; }
+    .login .sub { color:var(--muted);font-size:13px;margin-bottom:22px; }
+    input,select,button { font:inherit; }
+    .login input { width:100%;padding:12px;border-radius:9px;border:1px solid var(--border);background:var(--surface-2);color:var(--text);margin-bottom:14px;outline:none; }
+    .btn { background:linear-gradient(135deg,var(--accent),#e0b56b);color:#1a1a1a;border:none;padding:12px 22px;border-radius:9px;font-weight:700;cursor:pointer; }
+    .btn:hover { filter:brightness(1.05); }
+    .logout { background:var(--surface-2);border:1px solid var(--border);color:var(--muted);padding:8px 16px;border-radius:8px;cursor:pointer; }
+    /* stats */
+    .stats { display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:24px; }
+    .stat { background:rgba(30,24,19,.9);backdrop-filter:blur(6px);border:1px solid var(--border);border-radius:14px;padding:20px;border-left:4px solid var(--accent);box-shadow:0 8px 24px rgba(0,0,0,.3); }
+    .stat .label { color:var(--muted);font-size:13px; } .stat .value { font-size:1.8rem;font-weight:800;margin-top:4px; }
+    .stat.green { border-left-color:var(--green); } .stat.green .value { color:var(--green); }
+    /* filters */
+    .filters { display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap; }
+    .chip { padding:7px 15px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;font-size:13px; }
+    .chip.active { background:var(--accent);color:#1a1a1a;border-color:transparent; }
+    /* orders */
+    .order { background:rgba(30,24,19,.9);backdrop-filter:blur(6px);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:14px;box-shadow:0 8px 24px rgba(0,0,0,.25); }
+    .order-head { display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:12px; }
+    .order-head h3 { font-size:1.05rem; }
+    .order-head .meta { color:var(--muted);font-size:13px;margin-top:3px; }
+    .badge { font-size:11px;font-weight:700;padding:4px 11px;border-radius:99px;text-transform:capitalize; }
+    .b-pending{background:rgba(201,154,83,.18);color:var(--accent);} .b-confirmed{background:rgba(74,168,255,.18);color:#6bb5ff;}
+    .b-packed{background:rgba(167,139,250,.20);color:#c4b5fd;} .b-on_the_way{background:rgba(224,181,107,.22);color:var(--accent-2);}
+    .b-delivered{background:rgba(37,211,102,.18);color:var(--green);} .b-cancelled{background:rgba(224,57,43,.18);color:#ff8a7e;}
+    .items { font-size:13px;color:#ddd;margin-bottom:12px; } .items div { padding:3px 0; }
+    .order-foot { display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-top:1px solid var(--border);padding-top:12px; }
+    .total { font-weight:800;color:var(--accent);font-size:1.05rem; }
+    .actions { display:flex;gap:8px;align-items:center; }
+    .actions select { padding:8px 12px;border-radius:8px;background:var(--surface-2);border:1px solid var(--border);color:var(--text);cursor:pointer; }
+    .actions a { font-size:13px; }
+    .empty { text-align:center;color:var(--muted);padding:50px; }
+    .err { color:#e0392b;font-size:13px;min-height:18px; }
+    @media (max-width:640px) {
+      body { padding:14px; }
+      .login { margin:6vh auto; padding:30px 22px; }
+      .top { margin-bottom:18px; } .top h1 { font-size:1.25rem; }
+      .stats { grid-template-columns:1fr 1fr; gap:12px; }
+      .stat { padding:16px; } .stat .value { font-size:1.4rem; }
+      .order { padding:16px; }
+      .order-foot { flex-direction:column; align-items:stretch; gap:12px; }
+      .actions { justify-content:space-between; }
+      .actions select { flex:1; }
+    }
+  </style>
+</head>
+<body>
+  <!-- LOGIN -->
+  <div id="loginView" class="login">
+    <div class="logo">☕</div>
+    <h2>TERMA ADMIN</h2>
+    <p class="sub">Sign in to manage orders</p>
+    <input type="password" id="keyInput" placeholder="Admin key" />
+    <button class="btn" id="loginBtn" style="width:100%">Sign in</button>
+    <p class="err" id="loginErr"></p>
+    <p style="margin-top:14px"><a href="/">← Back to shop</a></p>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashView" hidden>
+    <div class="top">
+      <h1>Order Page</h1>
+      <div>
+        <a href="/" style="margin-right:14px">View shop</a>
+        <button class="logout" id="logoutBtn">Log out</button>
+      </div>
+    </div>
+    <div class="brand-hero"><h2 class="glow">Sugam</h2></div>
+    <div class="wrap">
+      <div class="stats" id="stats"></div>
+      <div class="filters" id="filters"></div>
+      <div id="orders"></div>
+    </div>
+  </div>
+
+  <script>
+    const $ = (s) => document.querySelector(s);
+    const rs = (n) => "Rs. " + Number(n).toLocaleString("en-IN");
+    let KEY = sessionStorage.getItem("terma_admin_key") || "";
+    let filter = "all";
+    const STATUSES = ["pending", "confirmed", "packed", "on_the_way", "delivered", "cancelled"];
+    const LABEL = { pending: "Pending", confirmed: "Confirmed", packed: "Packed", on_the_way: "On the way", delivered: "Delivered", cancelled: "Cancelled" };
+
+    async function apiGet(p) {
+      const r = await fetch("/api" + p, { headers: { "x-admin-key": KEY } });
+      if (r.status === 401) throw new Error("unauth");
+      return r.json();
+    }
+    async function apiPatch(p, body) {
+      const r = await fetch("/api" + p, { method: "PATCH", headers: { "Content-Type": "application/json", "x-admin-key": KEY }, body: JSON.stringify(body) });
+      return r.json();
+    }
+
+    async function login(key) {
+      const r = await fetch("/api/admin/login", { headers: { "x-admin-key": key } });
+      if (!r.ok) throw new Error("Invalid key");
+      KEY = key; sessionStorage.setItem("terma_admin_key", key);
+    }
+
+    function showDash() { $("#loginView").hidden = true; $("#dashView").hidden = false; load(); }
+
+    async function load() {
+      try {
+        const [statsRes, ordersRes] = await Promise.all([
+          apiGet("/admin/stats"),
+          apiGet("/admin/orders" + (filter === "all" ? "" : "?status=" + filter)),
+        ]);
+        renderStats(statsRes.data);
+        renderFilters();
+        renderOrders(ordersRes.data);
+      } catch (e) {
+        if (e.message === "unauth") logout();
+      }
+    }
+
+    function renderStats(s) {
+      $("#stats").innerHTML = `
+        <div class="stat"><div class="label">Total orders</div><div class="value">${s.orders}</div></div>
+        <div class="stat green"><div class="label">Revenue</div><div class="value">${rs(s.revenue)}</div></div>
+        <div class="stat"><div class="label">Pending</div><div class="value">${s.pending}</div></div>
+        <div class="stat"><div class="label">Delivered</div><div class="value">${s.delivered}</div></div>`;
+    }
+
+    function renderFilters() {
+      const opts = ["all", ...STATUSES];
+      $("#filters").innerHTML = opts.map((o) =>
+        `<button class="chip ${o === filter ? "active" : ""}" data-f="${o}">${o === "all" ? "All" : LABEL[o]}</button>`).join("");
+      document.querySelectorAll("#filters .chip").forEach((b) =>
+        b.onclick = () => { filter = b.dataset.f; load(); });
+    }
+
+    function renderOrders(orders) {
+      if (!orders.length) { $("#orders").innerHTML = `<div class="empty">No orders here yet.</div>`; return; }
+      $("#orders").innerHTML = orders.map((o) => `
+        <div class="order">
+          <div class="order-head">
+            <div>
+              <h3>Order #${o.id} — ${esc(o.customer_name)}</h3>
+              <div class="meta">📞 ${esc(o.phone)}${o.address ? " · 📍 " + esc(o.address) : ""} · ${o.created_at}</div>
+            </div>
+            <span class="badge b-${o.status}">${LABEL[o.status]}</span>
+          </div>
+          <div class="items">${o.items.map((i) => `<div>• ${esc(i.product_name)} (${esc(i.variant_label)}${i.color ? ", " + esc(i.color) : ""}) ×${i.qty} — ${rs(i.line_total)}</div>`).join("")}</div>
+          ${o.note ? `<div class="items" style="color:var(--muted)">📝 ${esc(o.note)}</div>` : ""}
+          <div class="order-foot">
+            <span class="total">${rs(o.total_npr)} ${o.delivery_npr ? `<span style="font-size:12px;color:var(--muted)">(incl. ${rs(o.delivery_npr)} delivery)</span>` : `<span style="font-size:12px;color:var(--green)">(free delivery)</span>`}</span>
+            <div class="actions">
+              <a href="https://wa.me/${o.phone.replace(/\\D/g, "").replace(/^0/, "977")}" target="_blank">WhatsApp <i class="fa-brands fa-whatsapp"></i></a>
+              <select data-id="${o.id}">
+                ${STATUSES.map((s) => `<option value="${s}" ${s === o.status ? "selected" : ""}>${LABEL[s]}</option>`).join("")}
+              </select>
+            </div>
+          </div>
+        </div>`).join("");
+      document.querySelectorAll(".actions select").forEach((sel) =>
+        sel.onchange = async () => { await apiPatch("/admin/orders/" + sel.dataset.id, { status: sel.value }); load(); });
+    }
+
+    const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    function logout() { sessionStorage.removeItem("terma_admin_key"); KEY = ""; $("#dashView").hidden = true; $("#loginView").hidden = false; }
+
+    $("#loginBtn").onclick = async () => {
+      try { await login($("#keyInput").value.trim()); showDash(); }
+      catch { $("#loginErr").textContent = "Invalid admin key"; }
+    };
+    $("#keyInput").addEventListener("keydown", (e) => { if (e.key === "Enter") $("#loginBtn").click(); });
+    $("#logoutBtn").onclick = logout;
+
+    // auto-login if key already stored
+    if (KEY) login(KEY).then(showDash).catch(logout);
+  </script>
+</body>
+</html>
