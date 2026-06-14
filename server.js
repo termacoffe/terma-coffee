@@ -40,7 +40,8 @@ function whatsappLink(order) {
     `\n${lines.join("\n")}\n\n` +
     `Subtotal: Rs. ${order.subtotal_npr.toLocaleString("en-IN")}\n` +
     `Delivery: ${order.delivery_npr ? "Rs. " + order.delivery_npr : "FREE"}\n` +
-    `*Total: Rs. ${order.total_npr.toLocaleString("en-IN")}*` +
+    `*Total: Rs. ${order.total_npr.toLocaleString("en-IN")}*\n` +
+    `Payment: ${order.payment === "online" ? "Online (QR)" : "Cash on Delivery"}` +
     (order.note ? `\n\nNote: ${order.note}` : "");
   return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
 }

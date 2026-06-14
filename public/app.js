@@ -236,12 +236,14 @@ async function placeOrder(e) {
   const btn = $("#placeOrderBtn");
   btn.disabled = true; btn.textContent = "Placing order…";
   try {
+    const payment = (document.querySelector('input[name="pay"]:checked') || {}).value || "cod";
     const payload = {
       customer: {
         name: $("#c-name").value, phone: $("#c-phone").value,
         address: $("#c-address").value, note: $("#c-note").value,
       },
       items: cart,
+      payment,
     };
     const { data } = await api.post("/orders", payload);
     cart = []; saveCart(); updateCartBadge();
@@ -249,13 +251,53 @@ async function placeOrder(e) {
     hide("#checkoutModal");
     // remember this order so the customer can track it later
     localStorage.setItem("terma_last_order", JSON.stringify({ id: data.order.id, phone: data.order.phone }));
-    $("#successId").textContent = "#" + data.order.id;
+
+    const o = data.order;
+    const firstName = (o.customer_name || "").split(" ")[0] || "friend";
+    $("#successTitle").textContent = `Thank you, ${firstName}! 🎉`;
+    $("#successMsg").innerHTML =
+      `Your order <strong>#${o.id}</strong> is placed successfully. We'll get in touch on WhatsApp to confirm it. 💛`;
     $("#successWhatsapp").href = data.whatsapp;
+    renderSuccessPayment(o);
+
+    // For online payment the customer still needs to pay, so don't invite them
+    // to "continue shopping" or use the generic confirm link — the QR button leads.
+    const online = o.payment === "online";
+    $("#successWhatsapp").hidden = online;
+    $("#successContinue").hidden = online;
+
     show("#successModal");
   } catch (err) {
     toast(err.message, true);
   } finally {
     btn.disabled = false; btn.textContent = "Place order";
+  }
+}
+
+// Show the right payment note on the success screen.
+function renderSuccessPayment(o) {
+  const box = $("#successPayment");
+  if (o.payment === "online") {
+    const msg =
+      `🪙 *Terma Coffee — Online Payment*\n` +
+      `Order #${o.id}\nName: ${o.customer_name}\n` +
+      `Total: Rs. ${Number(o.total_npr).toLocaleString("en-IN")}\n\n` +
+      `Please send me your *eSewa / bank account QR* so I can pay for this order. Thank you!`;
+    const link = `https://wa.me/${config.whatsapp}?text=${encodeURIComponent(msg)}`;
+    box.innerHTML = `
+      <div class="pay-note online">
+        <i class="fa-solid fa-qrcode"></i>
+        <p>To pay online, message us on WhatsApp and we'll send our <strong>eSewa / bank QR</strong>.</p>
+        <a class="btn btn-whatsapp full" href="${link}" target="_blank" rel="noopener">
+          <i class="fa-brands fa-whatsapp"></i> Message us for payment QR
+        </a>
+      </div>`;
+  } else {
+    box.innerHTML = `
+      <div class="pay-note cod">
+        <i class="fa-solid fa-money-bill-wave"></i>
+        <p>Pay <strong>cash on delivery</strong> when your order arrives. 💵</p>
+      </div>`;
   }
 }
 
@@ -305,6 +347,7 @@ function renderTracking(o) {
     <div class="track-card">
       <div class="tc-top"><h4>Order #${o.id}</h4><span class="pill s-${o.status}">${STATUS_META[o.status].label}</span></div>
       <div class="tc-meta">${items}</div>
+      <div class="tc-meta">Payment: <strong>${o.payment === "online" ? "Online" : "Cash on Delivery"}</strong></div>
       ${body}
       <div class="tc-total"><span>Total</span><span>${rs(o.total_npr)}</span></div>
     </div>`;

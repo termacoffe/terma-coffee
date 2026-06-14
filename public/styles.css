@@ -184,6 +184,26 @@ header {
 .checkout-summary .cs-total { font-weight: 800; color: var(--accent); border-top: 1px solid var(--border); padding-top: 8px; margin-top: 4px; }
 .checkout-fine { font-size: 12px; color: var(--muted); text-align: center; margin-top: 12px; }
 
+/* payment method picker */
+.pay-methods { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 8px 0 16px; }
+.pay-opt { cursor: pointer; }
+.pay-opt input { position: absolute; opacity: 0; pointer-events: none; }
+.pay-box { display: flex; flex-direction: column; gap: 3px; padding: 14px 12px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-2); transition: border-color .2s, background .2s; height: 100%; }
+.pay-box i { font-size: 20px; color: var(--accent); margin-bottom: 3px; }
+.pay-box strong { font-size: 14px; }
+.pay-box small { font-size: 11px; color: var(--muted); }
+.pay-opt input:checked + .pay-box { border-color: var(--accent); background: rgba(201,154,83,.12); box-shadow: 0 0 0 1px var(--accent) inset; }
+
+/* payment note on success screen */
+.pay-note { border-radius: 12px; padding: 16px; margin-bottom: 14px; text-align: center; font-size: 14px; }
+.pay-note i { font-size: 24px; margin-bottom: 6px; display: block; }
+.pay-note p { color: var(--text); margin-bottom: 10px; }
+.pay-note.online { background: rgba(37,211,102,.1); border: 1px solid rgba(37,211,102,.35); }
+.pay-note.online i { color: var(--green); }
+.pay-note.cod { background: rgba(201,154,83,.1); border: 1px solid rgba(201,154,83,.3); }
+.pay-note.cod i { color: var(--accent); }
+.pay-note.cod p { margin-bottom: 0; }
+
 /* SUCCESS */
 .success { text-align: center; }
 .success-check { width: 70px; height: 70px; border-radius: 50%; background: var(--green); display: grid; place-items: center; margin: 0 auto 18px; font-size: 32px; color: #fff; animation: pop .4s; }

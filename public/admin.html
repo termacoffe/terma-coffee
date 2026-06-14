@@ -169,6 +169,7 @@
             <div>
               <h3>Order #${o.id} — ${esc(o.customer_name)}</h3>
               <div class="meta">📞 ${esc(o.phone)}${o.address ? " · 📍 " + esc(o.address) : ""} · ${o.created_at}</div>
+              <div class="meta">${o.payment === "online" ? "💳 Online payment" : "💵 Cash on delivery"}</div>
             </div>
             <span class="badge b-${o.status}">${LABEL[o.status]}</span>
           </div>

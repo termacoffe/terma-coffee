@@ -42,6 +42,7 @@ db.exec(`
     subtotal_npr  INTEGER NOT NULL,
     delivery_npr  INTEGER NOT NULL DEFAULT 0,
     total_npr     INTEGER NOT NULL,
+    payment       TEXT NOT NULL DEFAULT 'cod', -- cod | online
     status        TEXT NOT NULL DEFAULT 'pending', -- pending|confirmed|delivered|cancelled
     created_at    TEXT NOT NULL DEFAULT (datetime('now'))
   );
@@ -57,6 +58,13 @@ db.exec(`
     line_total    INTEGER NOT NULL
   );
 `);
+
+// Start order numbers at 1001 so they look established (not "#1").
+// Safe to run every boot — only seeds the sequence if it isn't set yet.
+db.prepare(
+  `INSERT INTO sqlite_sequence (name, seq)
+   SELECT 'orders', 1000 WHERE NOT EXISTS (SELECT 1 FROM sqlite_sequence WHERE name='orders')`
+).run();
 
 const ORDER_STATUSES = ["pending", "confirmed", "packed", "on_the_way", "delivered", "cancelled"];
 
@@ -90,8 +98,8 @@ const variantById = db.prepare(
 );
 
 const insertOrder = db.prepare(`
-  INSERT INTO orders (customer_name, phone, address, note, subtotal_npr, delivery_npr, total_npr)
-  VALUES (@customer_name, @phone, @address, @note, @subtotal, @delivery, @total)
+  INSERT INTO orders (customer_name, phone, address, note, subtotal_npr, delivery_npr, total_npr, payment)
+  VALUES (@customer_name, @phone, @address, @note, @subtotal, @delivery, @total, @payment)
 `);
 const insertItem = db.prepare(`
   INSERT INTO order_items (order_id, product_name, variant_label, color, unit_price, qty, line_total)
@@ -141,12 +149,13 @@ export const repo = {
   },
 
   // Core ordering logic — prices come from the DB, never from the client.
-  createOrder({ customer = {}, items = [] }) {
+  createOrder({ customer = {}, items = [], payment = "cod" }) {
     const name = String(customer.name ?? "").trim().slice(0, 80);
     const phone = String(customer.phone ?? "").trim().slice(0, 30);
     if (!name) throw new Error("Customer name is required");
     if (!/[0-9]{7,}/.test(phone)) throw new Error("A valid phone number is required");
     if (!Array.isArray(items) || items.length === 0) throw new Error("Your cart is empty");
+    const pay = payment === "online" ? "online" : "cod";
 
     const lines = [];
     let subtotal = 0;
@@ -180,7 +189,7 @@ export const repo = {
         customer_name: name, phone,
         address: String(customer.address ?? "").trim().slice(0, 300),
         note: String(customer.note ?? "").trim().slice(0, 500),
-        subtotal, delivery, total,
+        subtotal, delivery, total, payment: pay,
       },
       lines
     );

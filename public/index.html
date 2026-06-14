@@ -174,6 +174,27 @@
       <label>Phone number <input id="c-phone" required maxlength="30" placeholder="98XXXXXXXX" /></label>
       <label>Delivery address <textarea id="c-address" rows="2" placeholder="Tole, ward, city"></textarea></label>
       <label>Note (optional) <input id="c-note" maxlength="200" placeholder="Any instructions" /></label>
+
+      <span class="opt-label">Payment method</span>
+      <div class="pay-methods">
+        <label class="pay-opt">
+          <input type="radio" name="pay" value="cod" checked />
+          <span class="pay-box">
+            <i class="fa-solid fa-money-bill-wave"></i>
+            <strong>Cash on Delivery</strong>
+            <small>Pay when it arrives</small>
+          </span>
+        </label>
+        <label class="pay-opt">
+          <input type="radio" name="pay" value="online" />
+          <span class="pay-box">
+            <i class="fa-solid fa-qrcode"></i>
+            <strong>Online Payment</strong>
+            <small>Get eSewa / bank QR on WhatsApp</small>
+          </span>
+        </label>
+      </div>
+
       <div class="checkout-summary" id="checkoutSummary"></div>
       <button type="submit" class="btn btn-primary full" id="placeOrderBtn">Place order</button>
       <p class="checkout-fine">You’ll get a confirmation and we’ll reach out on WhatsApp.</p>
@@ -183,14 +204,16 @@
   <!-- ===== ORDER SUCCESS ===== -->
   <div class="overlay" id="successModal" hidden>
     <div class="success">
+      <button class="close-x" data-close>&times;</button>
       <div class="success-check"><i class="fa-solid fa-check"></i></div>
-      <h3>Order placed! 🎉</h3>
-      <p>Your order <strong id="successId">#0</strong> has been received. We’ll confirm shortly.</p>
+      <h3 id="successTitle">Thank you! 🎉</h3>
+      <p id="successMsg">Your order has been placed.</p>
+      <div id="successPayment"></div>
       <a class="btn btn-whatsapp full" id="successWhatsapp" target="_blank" rel="noopener">
         <i class="fa-brands fa-whatsapp"></i> Confirm on WhatsApp
       </a>
       <button class="btn btn-primary full" id="successTrack"><i class="fa-solid fa-location-dot"></i> Track your order</button>
-      <button class="btn btn-ghost full" data-close>Continue shopping</button>
+      <button class="btn btn-ghost full" id="successContinue" data-close>Continue shopping</button>
     </div>
   </div>
 
