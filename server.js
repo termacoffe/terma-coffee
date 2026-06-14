@@ -12,6 +12,33 @@ const PORT = process.env.PORT || 3000;
 const ADMIN_KEY = process.env.ADMIN_KEY || "terma-admin";
 // Your WhatsApp number — used to build order confirmation links.
 const WHATSAPP = process.env.WHATSAPP || "9779767354091";
+// CallMeBot WhatsApp notifications (free). Set both to enable owner alerts.
+const CALLMEBOT_PHONE = process.env.CALLMEBOT_PHONE || "";
+const CALLMEBOT_APIKEY = process.env.CALLMEBOT_APIKEY || "";
+
+// Send the shop owner a WhatsApp message when a new order arrives.
+async function notifyOwner(order) {
+  if (!CALLMEBOT_PHONE || !CALLMEBOT_APIKEY) return; // not configured → skip
+  const items = order.items
+    .map((i) => `${i.product_name} (${i.variant_label}${i.color ? ", " + i.color : ""}) x${i.qty}`)
+    .join(", ");
+  const text =
+    `🔔 NEW ORDER #${order.id}\n` +
+    `${order.customer_name} — ${order.phone}\n` +
+    (order.address ? `${order.address}\n` : "") +
+    `${items}\n` +
+    `Total: Rs. ${order.total_npr.toLocaleString("en-IN")}\n` +
+    `Payment: ${order.payment === "online" ? "ONLINE (send QR)" : "Cash on Delivery"}`;
+  const url =
+    `https://api.callmebot.com/whatsapp.php?phone=${encodeURIComponent(CALLMEBOT_PHONE)}` +
+    `&text=${encodeURIComponent(text)}&apikey=${encodeURIComponent(CALLMEBOT_APIKEY)}`;
+  try {
+    await fetch(url);
+    console.log(`\x1b[32m🔔 owner notified of order #${order.id}\x1b[0m`);
+  } catch (e) {
+    console.log(`\x1b[31m✗ owner notify failed:\x1b[0m ${e.message}`);
+  }
+}
 
 app.use(express.json());
 app.use((req, _res, next) => {
@@ -69,6 +96,7 @@ api.get("/products/:id", (req, res) => {
 api.post("/orders", (req, res) => {
   try {
     const order = repo.createOrder(req.body);
+    notifyOwner(order); // fire-and-forget WhatsApp alert to the shop owner
     return ok(res, { order, whatsapp: whatsappLink(order) }, 201);
   } catch (e) {
     return fail(res, e.message);
