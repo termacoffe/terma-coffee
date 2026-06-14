@@ -309,10 +309,12 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   .card-body h3 { font-size: 14px; }
   .card-body .pdesc { -webkit-line-clamp: 2; }
 
-  /* social cards two-up */
-  .social-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
-  .social-card { padding: 20px 12px; }
-  .social-card i { font-size: 30px; }
+  /* social cards: one neat row of boxes (like the featured cards up top) */
+  .social-grid { grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .social-card { padding: 16px 4px; gap: 4px; }
+  .social-card i { font-size: 24px; margin-bottom: 2px; }
+  .social-card span { font-size: 11px; }
+  .social-card small { display: none; }
 
   /* full-height cart on phones */
   .cart { width: 100%; }
@@ -320,5 +322,5 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
 
 @media (max-width: 380px) {
   .product-grid { grid-template-columns: 1fr; }
-  .social-grid { grid-template-columns: 1fr; }
+  /* keep social as a single tidy row of 4 boxes even on small phones */
 }
