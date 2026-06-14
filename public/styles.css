@@ -174,7 +174,7 @@ header {
 .cart-line.total { font-size: 18px; font-weight: 800; color: var(--accent); margin: 12px 0 16px; }
 
 /* CHECKOUT */
-.checkout, .success { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; width: min(440px, 100%); padding: 30px; position: relative; animation: pop .3s; }
+.checkout, .success { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; width: min(440px, 100%); max-height: 90vh; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 30px; position: relative; animation: pop .3s; }
 .checkout h3, .success h3 { font-size: 1.4rem; margin-bottom: 18px; }
 .checkout label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--muted); margin-bottom: 14px; }
 .checkout input, .checkout textarea { font: inherit; font-size: 14px; color: var(--text); background: var(--surface-2); border: 1px solid var(--border); border-radius: 9px; padding: 11px 13px; outline: none; resize: vertical; }
